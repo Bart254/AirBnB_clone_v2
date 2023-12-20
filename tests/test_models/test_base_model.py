@@ -24,7 +24,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except (Exception):
             pass
 
     def test_default(self):
@@ -63,10 +63,12 @@ class test_basemodel(unittest.TestCase):
                          i.__dict__))
 
     def test_todict(self):
-        """ """
+        """ inserts key _sa_instance_state then tests if it persists"""
         i = self.value()
+        i.__dict__.update({'_sa_instance_state': True})
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
+        self.assertNotIn('_sa_instance_state', n)
 
     def test_kwargs_none(self):
         """ """
@@ -97,3 +99,16 @@ class test_basemodel(unittest.TestCase):
         n = new.to_dict()
         new = BaseModel(**n)
         self.assertFalse(new.created_at == new.updated_at)
+
+    def test_delete(self):
+        """ Tests if object is deleted from storage
+        """
+        from models import storage
+
+        new = self.value()
+        new.save()
+        size = len(storage.all())
+        for obj in storage.all().values():
+            self.assertIs(obj, new)
+        storage.delete(new)
+        self.assertEqual(size - 1, len(storage.all()))

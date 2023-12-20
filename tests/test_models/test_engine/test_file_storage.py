@@ -2,8 +2,10 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 import os
+from console import HBNBCommand
 
 
 class test_fileStorage(unittest.TestCase):
@@ -21,7 +23,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except (Exception):
             pass
 
     def test_obj_list_empty(self):
@@ -31,15 +33,22 @@ class test_fileStorage(unittest.TestCase):
     def test_new(self):
         """ New object is correctly added to __objects """
         new = BaseModel()
+        new.save()
         for obj in storage.all().values():
             temp = obj
-        self.assertTrue(temp is obj)
+        self.assertTrue(temp is new)
 
     def test_all(self):
         """ __objects is properly returned """
         new = BaseModel()
+        new.save()
         temp = storage.all()
         self.assertIsInstance(temp, dict)
+        for value in temp.values():
+            self.assertIs(new, value)
+        new3 = User()
+        for value in storage.all(User).values():
+            self.assertIs(value, new3)
 
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
@@ -63,7 +72,7 @@ class test_fileStorage(unittest.TestCase):
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
         new = BaseModel()
-        storage.save()
+        new.save()
         storage.reload()
         for obj in storage.all().values():
             loaded = obj
@@ -97,6 +106,7 @@ class test_fileStorage(unittest.TestCase):
     def test_key_format(self):
         """ Key is properly formatted """
         new = BaseModel()
+        new.save()
         _id = new.to_dict()['id']
         for key in storage.all().keys():
             temp = key
@@ -107,3 +117,12 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_create(self):
+        """ Cmd function creates an object
+        """
+        no_objs = len(storage.all())
+        cmd = HBNBCommand()
+        cmd.onecmd("create BaseModel")
+        new_no_objs = len(storage.all())
+        self.assertEqual(new_no_objs - no_objs, 1)
