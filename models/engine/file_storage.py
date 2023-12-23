@@ -9,13 +9,23 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
+        from models.amenity import Amenity
+        from models.city import City
+        from models.user import User
+        from models.review import Review
+        from models.place import Place
+        from models.state import State
         """Returns a dictionary of models currently in storage"""
-        if cls is not None:
-            cls_objs = {}
-            for key, obj in FileStorage.__objects.items():
-                if type(obj) is cls:
-                    cls_objs.update({key: obj})
-            return cls_objs
+        classes = {'User': User, 'State': State, 'Place': Place,
+                   'City': City, 'Review': Review, 'Amenity': Amenity
+                   }
+        if cls:
+            if cls in classes.keys():
+                cls_objs = {}
+                for key, obj in FileStorage.__objects.items():
+                    if obj.__class__.__name__ == cls:
+                        cls_objs.update({key: obj})
+                return cls_objs
         return FileStorage.__objects
 
     def new(self, obj):
