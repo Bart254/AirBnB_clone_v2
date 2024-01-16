@@ -59,3 +59,6 @@ if ! grep -q "$line1" /etc/nginx/sites-available/default; then
 	# restart Nginx
 	 service nginx restart
 fi
+
+# ensure program exits succcessfully
+exit 0
