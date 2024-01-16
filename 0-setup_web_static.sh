@@ -52,9 +52,10 @@ fi
 # updating nginx configuration to serve content of /test/index.html when path is hbnb_static
 line1='location /hbnb_static {'
 if ! grep -q "$line1" /etc/nginx/sites-available/default; then
-	line2='alias /data/web_static/current/;'
-	line3='}'
-	 sed -i "/location \/ {/i \ \t$line1\n\t\t$line2\n\t$line3\n" /etc/nginx/sites-available/default
+	line2='rewrite ^/hbnb_static$ /hbnb_static/;'
+	line3='alias /data/web_static/current/;'
+	line4='}'
+	 sed -i "/location \/ {/i \ \t$line1\n\t\t$line2\n\t\t$line3\n\t$line4" /etc/nginx/sites-available/default
 
 	# restart Nginx
 	 service nginx restart
