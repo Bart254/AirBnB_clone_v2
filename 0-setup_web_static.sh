@@ -30,8 +30,8 @@ echo -e "$line1\n$line2\n\t$line3\n\t\t$line31\n\t\t$line32\n\t\t$line33\n\t$lin
  ln -sf '/data/web_static/releases/test' '/data/web_static/current'
 
 # change ownership and group of /data folder to ubuntu
-chown -R bartlett /data
-chgrp -R bartlett /data
+chown -R ubuntu /data
+chgrp -R ubuntu /data
 
 # updating nginx configuration to serve content of /test/index.html when path is hbnb_static
 line1='location /hbnb_static {'
