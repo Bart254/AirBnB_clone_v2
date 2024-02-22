@@ -32,14 +32,7 @@ chown -R ubuntu /data
 chgrp -R ubuntu /data
 chmod -R 755 /data/
 # updating nginx configuration to serve content of /test/index.html when path is hbnb_static
-line1='location /hbnb_static/ {'
-line2='alias /data/web_static/current;'
-line3='}'
-line4='location = /hbnb_static {'
-line5='alias /data/web_static/current/index.html;'
-line6='}'
-sed -i "/location \/ {/i \ \t$line1\n\t\t$line2\n\t$line3\n\n\t$line4\n\t\t$line5\n\t$line6\n" /etc/nginx/sites-available/default
-
+sudo sed -i '48 i \\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 # restart Nginx
 service nginx restart
 # ensure program exits succcessfully
