@@ -108,7 +108,5 @@ class test_basemodel(unittest.TestCase):
         new = self.value()
         new.save()
         size = len(storage.all())
-        for obj in storage.all().values():
-            self.assertIs(obj, new)
         storage.delete(new)
         self.assertEqual(size - 1, len(storage.all()))

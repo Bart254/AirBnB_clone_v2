@@ -32,7 +32,7 @@ chown -R ubuntu /data
 chgrp -R ubuntu /data
 chmod -R 755 /data/
 # updating nginx configuration to serve content of /test/index.html when path is hbnb_static
-line1='location /hbnb_static {'
+line1='location /hbnb_static/ {'
 line2='alias /data/web_static/current;'
 line3='}'
 line4='location = /hbnb_static {'

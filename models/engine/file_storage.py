@@ -15,18 +15,22 @@ class FileStorage:
         from models.review import Review
         from models.place import Place
         from models.state import State
+        from models.base_model import BaseModel
         """Returns a dictionary of models currently in storage"""
         classes = {'User': User, 'State': State, 'Place': Place,
-                   'City': City, 'Review': Review, 'Amenity': Amenity
+                   'City': City, 'Review': Review, 'Amenity': Amenity,
+                   'BaseModel': BaseModel
                    }
         if cls:
-            if cls in classes.keys():
-                cls_objs = {}
-                for key, obj in FileStorage.__objects.items():
-                    if obj.__class__.__name__ == cls:
-                        cls_objs.update({key: obj})
-                return cls_objs
-        return FileStorage.__objects
+            cls_objs = {}
+            for key in classes.keys():
+                if classes[key] == cls or key == cls:
+                    for obj_key, obj in FileStorage.__objects.items():
+                        if obj_key.split('.')[0] == key:
+                            cls_objs.update({obj_key: obj})
+            return cls_objs
+        else:
+            return FileStorage.__objects
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
@@ -68,13 +72,14 @@ class FileStorage:
     def delete(self, obj=None):
         """ Deletes obj from dictionary .__objects
         """
-        if obj is None:
-            pass
-        else:
-            k = None
+        if obj:
             for key in FileStorage.__objects.keys():
                 if FileStorage.__objects[key] is obj:
-                    k = key
-                    break
-            if k:
-                del FileStorage.__objects[k]
+                    del FileStorage.__objects[key]
+                    FileStorage.save()
+                    return
+
+    def close(self):
+        """Calls reload
+        """
+        FileStorage.reload()
