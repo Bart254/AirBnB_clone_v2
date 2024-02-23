@@ -4,9 +4,8 @@ distributes an archive to your web servers, using the function deploy"""
 import os
 from datetime import datetime
 from fabric.api import run, local, env, put
-
-
-env.hosts = ['34.138.245.164', '54.224.201.40']
+env.hosts = ['100.25.177.60', '54.87.205.15']
+env.user = 'ubuntu'
 
 
 def do_pack():
