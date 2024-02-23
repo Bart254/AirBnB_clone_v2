@@ -17,10 +17,12 @@ def do_deploy(archive_path):
     run_a = run('mkdir -p {}'.format(remote_folder))
     run_b = run('tar -xzf /tmp/{} -C {}'.format(filename, remote_folder))
     run_c = run('rm -f /tmp/{}'.format(filename))
+    run_ci = run(f'mv {remote_folder}/web_static/* {remote_folder}')
+    run_cii = run(f'rm -r {remote_folder}/web_static')
     run_d = run('rm -f /data/web_static/current')
-    run_e = run('ln -s {}/web_static /data/web_static/current'
+    run_e = run('ln -s {} /data/web_static/current'
                 .format(remote_folder))
     if False in [put_result.failed, run_a.failed, run_b.failed, run_c.failed,
-                 run_d.failed, run_e.failed]:
+                 run_ci.failed, run_cii.failed, run_d.failed, run_e.failed]:
         return False
     return True
