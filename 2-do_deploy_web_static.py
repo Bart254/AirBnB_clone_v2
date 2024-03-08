@@ -19,16 +19,12 @@ def do_deploy(archive_path):
         run2 = run('tar -xzf /tmp/{} -C /data/web_static/releases/{}'.format
                    (_filename, filename))
         run3 = run('rm /tmp/{}'.format(_filename))
-        run4 = run('mv /data/web_static/releases/{}/web_static/* \
-            /data/web_static/releases/{}/'.format(filename, filename))
-        run5 = run('rm -rf /data/web_static/releases/{}/web_static'
-                   .format(filename))
         run6 = run('rm -rf /data/web_static/current')
         run7 = run('ln -s /data/web_static/releases/{} \
                     /data/web_static/current'.format(filename))
 
-        if True in (run1.failed, run2.failed, run3.failed, run4.failed,
-                    run5.failed, run6.failed, run7.failed, put1.failed):
+        if True in (run1.failed, run2.failed, run3.failed,
+                    run6.failed, run7.failed, put1.failed):
             return False
         return True
     return False
