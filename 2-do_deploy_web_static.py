@@ -3,7 +3,7 @@
 """
 from fabric.api import run, put, env
 import os
-env.hosts = ['100.25.177.60', '54.87.205.15']
+env.hosts = ['100.25.109.13', '18.204.13.228']
 env.user = 'ubuntu'
 
 
@@ -28,7 +28,7 @@ def do_deploy(archive_path):
                     /data/web_static/current'.format(filename))
 
         if True in (run1.failed, run2.failed, run3.failed, run4.failed,
-                    run5.failed, run6.failed, run7.failed, put1.faield):
+                    run5.failed, run6.failed, run7.failed, put1.failed):
             return False
         return True
     return False
