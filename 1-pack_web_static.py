@@ -12,7 +12,7 @@ def do_pack():
     archive_file = 'web_static' + datetime.now().strftime('%Y%m%d%H%M%S') +\
         '.tgz'
     archive_path = 'versions' + '/' + archive_file
-    r2 = local("tar -cvzf {} web_static".format(archive_path), capture=True)
+    r2 = local("tar -cvzf {} web_static/*".format(archive_path), capture=True)
     if r1.failed or r2.failed:
         return None
     return archive_path
