@@ -1,0 +1,18 @@
+header {
+	background-color: var(--lighter_brown);
+	height: 70px;
+	width: 100%;
+	border-bottom: 1px solid #CCCCCC;
+/*	background-image: url("../images/logo.png");
+	background-repeat: no-repeat;
+	background-position: left 20px center;*/
+}
+
+.header_img {
+	margin-left: 20px;
+	height: 70px;
+	width: auto;
+	background-image: url("../images/logo.png");
+	background-repeat: no-repeat;
+	background-position: left;
+}
